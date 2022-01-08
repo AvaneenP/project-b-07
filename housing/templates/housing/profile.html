@@ -1,0 +1,100 @@
+<!doctype html>
+
+<!-- Bootstrap -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src='https://api.mapbox.com/mapbox-gl-js/v2.3.1/mapbox-gl.js'></script>
+<link href='https://api.mapbox.com/mapbox-gl-js/v2.3.1/mapbox-gl.css' rel='stylesheet' />
+
+{% load bootstrap5 %}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+{% load socialaccount %}
+
+<!--<div style="width: 100%" class="shadow p-2 mb-3 bg-body rounded text-white">-->
+<!--    <h3 class="font-monospace text-center">Housing for UVA Students by B-07!</h3>-->
+<!--</div>-->
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark border-bottom box-shadow mb-3">
+    <div class="container-fluid">
+        <a class="navbar-brand">Housing Website for UVA Students</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+        <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'index' %}">Homepage</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'housing:studentHousingList' %}">Browse Listings</a>
+                </li>
+                {% if user.is_authenticated %}
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" id="dropdownMenuLink" aria-haspopup="true" aria-expanded="false">Account</a>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                        <a class="dropdown-item nav-link" style="color:black;" href="{% url 'housing:profile' %}">Profile</a>
+                        <a class="dropdown-item nav-link" style="color:black;" href="{% url 'housing:review_list' %}">Manage comments</a>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'housing:submission' %}">Suggest a Listing</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'housing:logout' %}">Logout</a>
+                </li>
+                {% else %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% provider_login_url 'google' %}">Login</a>
+                </li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="container">
+    <div class="col d-flex justify-content-center">
+        <div class="jumbotron">
+            <h1 class="display-4">Housing for UVA Students by B-07!</h1>
+            <hr class="my-4">
+        </div>
+    </div>
+</div>
+
+<h1 class="display-3 col-md-4 offset-md-4">Profile</h1><br>
+
+{% if currentuser %}
+    <ul class="list-group col-md-3 offset-md-4">
+        <label class="form-label">User Name</label>
+        <li class="list-group-item">{{ currentuser.userName }}</li><br>
+        <label class="form-label">Email</label>
+        <li class="list-group-item">{{ currentuser.email }}</li><br>
+        <label class="form-label">Gender</label>
+        <li class="list-group-item">{{ currentuser.gender }}</li><br>
+        <label class="form-label">Age</label>
+        {% if currentuser.age != 0 %}
+            <li class="list-group-item">{{ currentuser.age }}</li><br>
+        {% else %}
+            <li class="list-group-item"></li><br>
+        {% endif %}
+        <label class="form-label">School Year</label>
+        <li class="list-group-item">{{ currentuser.schoolYear }}</li><br>
+        <label class="form-label">Major</label>
+        <li class="list-group-item">{{ currentuser.major }}</li><br>
+    </ul>
+    <a style="text-decoration:none" class="btn btn-primary col-md-1 offset-md-5" href="{% url 'housing:edit_profile' %}">Edit</a><br>
+{% else %}
+    <p>No profile available.</p>
+{% endif %}
+<br>
+
+<div style="bottom:0; width:100%" class="card text-center">
+    <div class="card-body">
+        <h5 class="card-title">Project B-07</h5>
+        <p class="card-text">CS3240 Off-Grounds Housing</p>
+    </div>
+    <div class="card-footer text-muted">
+        c. 2021
+    </div>
+</div>
